@@ -1,0 +1,15 @@
+﻿@model AdminViewModel;
+@{ ViewData["Title"] = "Admin - Dashboard"; }
+
+<h1>Users</h1>
+
+@foreach (var user in Model.user){
+    <p>@user.Id</p>
+}
+
+<h1>Admin</h1>
+
+@foreach (var admin in Model.admins)
+{
+    <p>@admin.Id</p>
+}

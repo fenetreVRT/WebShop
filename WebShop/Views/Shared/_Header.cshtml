@@ -1,0 +1,31 @@
+﻿<div class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center m-3">
+
+    <nav>
+            <a asp-action="Index" asp-controller="Home" class="m-4">HOME</a>
+            <a asp-action="Index" asp-controller="Form" class="m-4">CONTACT</a>
+
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
+            {
+               <a asp-action="Index" asp-controller="Admin" class="m-4">Admin</a> 
+            }
+            
+    </nav>
+    <div>
+            @if (signInManager.IsSignedIn(User))
+            {
+                <a asp-action="Index" asp-controller="Account">@User.Identity?.Name</a>
+                <a asp-action="Index" asp-controller="Account">@(User.FindFirst("DisplayName")?.Value)</a>
+                <a asp-action="LogOut" asp-controller="Account" class="m-4">LOG OUT</a>
+
+            }
+            else
+            {
+                <a asp-action="Registration" asp-controller="Account" class="m-4">REGISTER NOW</a>
+                <a asp-action="LogIn" asp-controller="Account" class="m-4">LOGIN</a>
+            }
+    </div>
+    </div>
+</div>
+
+
