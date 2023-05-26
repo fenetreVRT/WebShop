@@ -1,23 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebShop.Services;
+using WebShop.Models.Entities;
 using WebShop.ViewModels;
 
 namespace WebShop.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly AuthService _auth;
+    private readonly UserManager<AppUserEntity> _userManager;
+    private readonly SignInManager<AppUserEntity> _signInManager;
 
-    public AccountController(AuthService auth)
+    public AccountController(UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager)
     {
-        _auth = auth;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     [Authorize]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var user = await _userManager.FindByNameAsync(User.Identity?.Name ?? "");
+        if (user is null)
+            return RedirectToAction("Login");
+
+        return View(new AccountViewModel(user));
     }
 
     public IActionResult Registration()
@@ -28,15 +35,29 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Registration(UserRegistrationViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            if (await _auth.RegistrationAsync(model))
-                return RedirectToAction("Registration");
-
-            ModelState.AddModelError("", "A user with the same e-mail already exists");
+            return View(model);
         }
 
-        return View(model);
+        AppUserEntity user = model;
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (!result.Succeeded)
+        {
+            result.Errors.ToList().ForEach(error => ModelState.AddModelError("", error.Description));
+            return View(model);
+        }
+
+        if (_userManager.Users.Count() == 1)
+        {
+            await _userManager.AddToRoleAsync(user, "admin");
+        }
+        else
+        {
+            await _userManager.AddToRoleAsync(user, "customer");
+        }
+
+        return RedirectToAction("login");
     }
 
     //Send user to view
@@ -49,24 +70,24 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> LogIn(UserLogInViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            if (await _auth.LogInAsync(model))
-                return RedirectToAction("index");
-
-            ModelState.AddModelError("", "Incorrect email or password");
+            return View(model);
         }
 
-        return View(model);
+        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+        if (!result.Succeeded)
+        {
+            ModelState.AddModelError("", "Incorrect email or password");
+            return View(model);
+        }
+        return RedirectToAction("index");
     }
 
     [Authorize]
     public async Task<IActionResult> LogOut()
     {
-        if (await _auth.LogOutAsync(User))
-            return LocalRedirect("/");
-
-        return RedirectToAction("Index");
+        await _signInManager.SignOutAsync();
+        return LocalRedirect("/");
     }
-
 }

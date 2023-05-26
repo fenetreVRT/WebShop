@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebShop.Contexts;
-using WebShop.Models.Entities;
+using WebShop.ViewModels;
 
 namespace WebShop.Controllers;
 
@@ -19,21 +19,22 @@ public class ContactController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Index(ContactMessageEntity model)
+    public async Task<IActionResult> Index(ContactViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _context.Add(model);
-            _context.SaveChanges();
-
-
-            return RedirectToAction("index");
-
-
+            return View(model);
         }
-        ModelState.AddModelError("", "Submit a message");
 
-        return View(model);
+        await _context.ContactMessages.AddAsync(model);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("sent");
+    }
+
+    public IActionResult Sent()
+    {
+        return View();
     }
 
 }

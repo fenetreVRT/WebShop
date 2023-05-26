@@ -1,0 +1,7 @@
+﻿@model IEnumerable<ProductEntity>
+<h1>Products</h1>
+
+@foreach (var product in Model)
+{
+    <partial name="_ProductCard" model="product" />
+}

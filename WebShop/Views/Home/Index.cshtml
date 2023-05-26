@@ -1,3 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home"; 
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
 }
+
+<section>
+
+    <a class="product-showcase" asp-action="Details" asp-controller="Products" asp-route-id="@Model.ShowCaseProduct?.Id">
+        <img src="~/img/@Model.ShowCaseProduct?.Image" alt="@Model.ShowCaseProduct?.Title" />
+        <div>
+            <h2>@Model.ShowCaseProduct?.Title</h2>
+            <p>@Model.ShowCaseProduct?.Description</p>
+        </div>
+    </a>
+
+
+</section>
+
+@foreach (var productSection in Model.ProductSections)
+{
+    <section class="product-section">
+        <h2>@productSection.Title</h2>
+        <div class="product-gallery">
+            @foreach (var product in productSection.Products)
+            {
+
+                <partial name="_ProductCard" model="product" />
+
+            }
+        </div>
+    </section>
+}
+

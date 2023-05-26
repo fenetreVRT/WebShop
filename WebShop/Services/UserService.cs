@@ -1,23 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebShop.Contexts;
-using WebShop.Models.Entities;
+﻿//using Microsoft.EntityFrameworkCore;
+//using WebShop.Contexts;
+//using WebShop.Models.Entities;
 
-namespace WebShop.Services;
+//namespace WebShop.Services;
 
-public class UserService
-{
+//public class UserService
+//{
 
 
-    private readonly WebAppContext _identityContext;
+//    private readonly WebAppContext _identityContext;
 
-    public UserService(WebAppContext identityContext)
-    {
-        _identityContext = identityContext;
-    }
+//    public UserService(WebAppContext identityContext)
+//    {
+//        _identityContext = identityContext;
+//    }
 
-    public async Task<AppUserEntity> GetUserProfileAsync(string userId)
-    {
-        var userProfileEntity = await _identityContext.UserProfiles.Include(x => x.User).FirstOrDefaultAsync(x => x.UserId == userId);
-        return userProfileEntity!;
-    }
-}
+//    public async Task<AppUserEntity> GetUserProfileAsync(string userId)
+//    {
+//        var userProfileEntity = await _identityContext.UserProfiles.Include(x => x.User).FirstOrDefaultAsync(x => x.UserId == userId);
+//        return userProfileEntity!;
+//    }
+//}

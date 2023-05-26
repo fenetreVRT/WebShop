@@ -1,15 +1,18 @@
-﻿using WebShop.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using WebShop.Models.Entities;
 
 namespace WebShop.ViewModels;
 
-public class FormViewModel
+public class ContactViewModel
 {
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
+
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; } = null!;
     public string FormMessage { get; set; } = null!;
 
-    public static implicit operator ContactMessageEntity(FormViewModel entity)
+    public static implicit operator ContactMessageEntity(ContactViewModel entity)
     {
         return new ContactMessageEntity
         {

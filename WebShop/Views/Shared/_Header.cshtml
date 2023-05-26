@@ -3,21 +3,19 @@
 
     <nav>
             <a asp-action="Index" asp-controller="Home" class="m-4">HOME</a>
-            <a asp-action="Index" asp-controller="Form" class="m-4">CONTACT</a>
+            <a asp-action="Index" asp-controller="Contact" class="m-4">CONTACT</a>
+            <a asp-action="Index" asp-controller="Products" class="m-4">PRODUCTS</a>
 
             @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
             {
                <a asp-action="Index" asp-controller="Admin" class="m-4">Admin</a> 
             }
-            
     </nav>
     <div>
             @if (signInManager.IsSignedIn(User))
             {
                 <a asp-action="Index" asp-controller="Account">@User.Identity?.Name</a>
-                <a asp-action="Index" asp-controller="Account">@(User.FindFirst("DisplayName")?.Value)</a>
                 <a asp-action="LogOut" asp-controller="Account" class="m-4">LOG OUT</a>
-
             }
             else
             {

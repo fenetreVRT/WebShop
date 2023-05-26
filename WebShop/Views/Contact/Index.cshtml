@@ -1,4 +1,4 @@
-﻿@model FormViewModel
+﻿@model ContactViewModel
 @{
     ViewData["Title"] = "Contact us!";
 }
@@ -28,7 +28,7 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="FormMessage" class="form-label">Form</label>
+            <label asp-for="FormMessage" class="form-label">Message</label>
             <input asp-for="FormMessage" class="form-control" />
             <small class="text-danger"><span asp-validation-for="FormMessage"></span></small>
         </div>

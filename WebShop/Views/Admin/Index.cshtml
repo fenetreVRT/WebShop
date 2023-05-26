@@ -3,13 +3,21 @@
 
 <h1>Users</h1>
 
-@foreach (var user in Model.user){
-    <p>@user.Id</p>
+@foreach (var user in Model.Users)
+{
+    <p>Customer: @user.FirstName    Email: @user.Email</p>
 }
 
-<h1>Admin</h1>
+<h1>Admins</h1>
 
-@foreach (var admin in Model.admins)
+@foreach (var admin in Model.Admins)
 {
-    <p>@admin.Id</p>
+    <p>@admin.FirstName</p>
+}
+
+<h1>Messages</h1>
+
+@foreach (var message in Model.Messages)
+{
+    <partial name="_Message" model="message" />
 }

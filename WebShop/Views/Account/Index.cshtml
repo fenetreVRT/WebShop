@@ -1,3 +1,11 @@
-﻿@{
+﻿@model AccountViewModel
+@{
     ViewData["Title"] = "My Account";
 }
+
+<div class="account">
+    <div>
+        <p>@Model.FirstName @Model.LastName</p>
+        <p>@Model.Email</p>
+    </div>
+</div>

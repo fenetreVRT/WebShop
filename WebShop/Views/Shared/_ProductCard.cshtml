@@ -1,0 +1,9 @@
+﻿@model ProductEntity
+
+<div class="product-card">
+    <a asp-action="Details" asp-controller="Products" asp-route-id="@Model.Id">
+        <h3>@Model.Title</h3>
+        <img src="~/img/@Model.Image" alt="@Model.Title" />
+        <p>@Model.Description</p>
+    </a>
+</div>
